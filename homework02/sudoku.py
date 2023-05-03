@@ -110,12 +110,11 @@ def check_solution(solution: tp.List[tp.List[str]]) -> bool:
     """ Если решение solution верно, то вернуть True, в противном случае False """
 
     for i in range(9):
-        if [set(get_row(solution, (i, 0))) != set('123456789')] \
-                or [set(get_col(solution, (0))) != set('123456789')] \
-                or [set(get_block(solution, ((i // 3) * 3, (i % 3) * 3))) != set('123456789')]:
+        if (set(get_row(solution, (i, 0))) != set('123456789')) \
+                or (set(get_col(solution, (0, i))) != set('123456789')) \
+                or (set(get_block(solution, ((i // 3) * 3, (i % 3) * 3))) != set('123456789')):
             return False
-        else:
-            return True
+    return True
 
 
 def generate_sudoku(N: int) -> tp.List[tp.List[str]]:
