@@ -7,6 +7,7 @@ T = tp.TypeVar("T")
 
 def read_sudoku(path: tp.Union[str, pathlib.Path]) -> tp.List[tp.List[str]]:
     """ Прочитать Судоку из указанного файла """
+
     path = pathlib.Path(path)
     with path.open() as f:
         puzzle = f.read()
@@ -54,6 +55,7 @@ def get_col(grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int]) -> tp.List[str
 
 def get_block(grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int]) -> tp.List[str]:
     """ Возвращает все значения из квадрата, в который попадает позиция pos """
+
     result = []
     for i in range(pos[0] // 3 * 3, (pos[0] // 3) * 3 + 3):
         for j in range(pos[1] // 3 * 3, (pos[1] // 3) * 3 + 3):
@@ -63,6 +65,7 @@ def get_block(grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int]) -> tp.List[s
 
 def find_empty_positions(grid: tp.List[tp.List[str]]) -> tp.Optional[tp.Tuple[int, int]]:
     """ Найти первую свободную позицию в пазле """
+
     a = [-1, -1]
     for i in range(len(grid)):
         for j in range(len(grid)):
@@ -75,6 +78,7 @@ def find_empty_positions(grid: tp.List[tp.List[str]]) -> tp.Optional[tp.Tuple[in
 
 def find_possible_values(grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int]) -> tp.Set[str]:
     """ Вернуть множество возможных значения для указанной позиции """
+
     return set('123456789') - set(get_row(grid, pos)) - set(get_col(grid, pos)) - set(get_block(grid, pos))
 
 
@@ -102,14 +106,13 @@ def solve(grid: tp.List[tp.List[str]]) -> tp.Optional[tp.List[tp.List[str]]]:
     grid[a][b] = '.'
 
 
-
 def check_solution(solution: tp.List[tp.List[str]]) -> bool:
     """ Если решение solution верно, то вернуть True, в противном случае False """
-    # TODO: Add doctests with bad puzzles
+
     for i in range(9):
         if [set(get_row(solution, (i, 0))) != set('123456789')] \
-            or [set(get_col(solution, (0))) != set('123456789')] \
-            or [set(get_block(solution, ((i // 3) * 3, (i % 3) * 3))) != set('123456789')]:
+                or [set(get_col(solution, (0))) != set('123456789')] \
+                or [set(get_block(solution, ((i // 3) * 3, (i % 3) * 3))) != set('123456789')]:
             return False
         else:
             return True
@@ -117,6 +120,7 @@ def check_solution(solution: tp.List[tp.List[str]]) -> bool:
 
 def generate_sudoku(N: int) -> tp.List[tp.List[str]]:
     """Генерация судоку заполненного на N элементов"""
+
     new = solve([['.' for j in range(9)] for i in range(9)])
 
     while (N < 81):
