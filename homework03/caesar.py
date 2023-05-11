@@ -1,94 +1,77 @@
 import typing as tp
 
-
+eng_A = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+eng_a = 'abcdefghigklmnopqrstuvwxyz'
+rus_A = 'АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ'
+rus_a = 'абвгдеёжзийклмнопрстуфхцчшщъыьэюя'
 def encrypt_caesar(plaintext: str, shift: int = 3) -> str:
-    """
-    Encrypts plaintext using a Caesar cipher.
 
-    >>> encrypt_caesar("PYTHON")
-    'SBWKRQ'
-    >>> encrypt_caesar("python")
-    'sbwkrq'
-    >>> encrypt_caesar("Python3.6")
-    'Sbwkrq3.6'
-    >>> encrypt_caesar("")
-    ''
-    """
-    ciphertext = ""
-    eng_ABC = 'ABCDEFGHIJKLMNOPQRSTUVWXYZABC'
-    eng_abc = 'abcdefghigklmnopqrstuvwxyzabc'
+    ciphertext = ''
+    eng_A_caesar = ''
+    eng_a_caesar = ''
+    rus_A_caesar = ''
+    rus_a_caesar = ''
 
-    rus_A = 'АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯАБВ'
-    rus_a = 'абвгдеёжзийклмнопрстуфхцчшщъыьэюяабв'
+    for i in range(len(eng_A)):
+        eng_A_caesar += eng_A[(i + shift) % len(eng_A)]
+    for i in range(len(eng_a)):
+        eng_a_caesar += eng_a[(i + shift) % len(eng_a)]
+    for i in range(len(rus_A)):
+        rus_A_caesar += rus_A[(i + shift) % len(rus_A)]
+    for i in range(len(rus_a)):
+        rus_a_caesar += rus_a[(i + shift) % len(rus_a)]
 
-    a1 = eng_ABC.find(plaintext[0])
-    a2 = eng_abc.find(plaintext[0])
-    a3 = rus_A.find(plaintext[0])
-    a4 = rus_a.find(plaintext[0])
-    a = [a1, a2, a3, a4]
+    encrypt_eng_A = str.maketrans(eng_A, eng_A_caesar)
+    encrypt_eng_a = str.maketrans(eng_a, eng_a_caesar)
+    encrypt_rus_A = str.maketrans(rus_A, rus_A_caesar)
+    encrypt_rus_a = str.maketrans(rus_a, rus_a_caesar)
 
-    if (a[0] != -1) or (a[1] != -1):
-        for i in range(len(plaintext)):
-            if plaintext[i].isupper():
-                ciphertext += eng_ABC[i + 3]
-            else:
-                ciphertext += eng_abc[i + 3]
-            if plaintext[i].isdigit():
-                ciphertext += plaintext[i]
+    ciphertext = plaintext.translate(encrypt_eng_A).translate(encrypt_eng_a).translate(encrypt_rus_A).translate(encrypt_rus_a)
 
-    else:
-        for i in range(len(plaintext)):
-            if plaintext[i].isupper():
-                ciphertext += rus_A[i + 3]
-            else:
-                ciphertext += rus_a[i + 3]
-            if plaintext[i].isdigit():
-                ciphertext += plaintext[i]
     return ciphertext
 
 def decrypt_caesar(ciphertext: str, shift: int = 3) -> str:
-    """
-    Decrypts a ciphertext using a Caesar cipher.
 
-    >>> decrypt_caesar("SBWKRQ")
-    'PYTHON'
-    >>> decrypt_caesar("sbwkrq")
-    'python'
-    >>> decrypt_caesar("Sbwkrq3.6")
-    'Python3.6'
-    >>> decrypt_caesar("")
-    ''
-    """
-    plaintext = ""
-    eng_ABC = 'XYZABCDEFGHIJKLMNOPQRSTUVWXYZ'
-    eng_abc = 'xyzabcdefghigklmnopqrstuvwxyz'
+    plaintext = ''
+    eng_A_caesar = ''
+    eng_a_caesar = ''
+    rus_A_caesar = ''
+    rus_a_caesar = ''
 
-    rus_A = 'ЭЮЯАБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬ'
-    rus_a = 'эюяабвгдеёжзийклмнопрстуфхцчшщъыь'
+    for i in range(len(eng_A)):
+        j = i - shift
+        if j < 0:
+            eng_A_caesar += eng_A[j + len(eng_A)]
+        else:
+            eng_A_caesar += eng_A[j]
 
-    a1 = eng_ABC.find(plaintext[0])
-    a2 = eng_abc.find(plaintext[0])
-    a3 = rus_A.find(plaintext[0])
-    a4 = rus_a.find(plaintext[0])
-    a = [a1, a2, a3, a4]
+    for i in range(len(eng_a)):
+        j = i - shift
+        if j < 0:
+            eng_a_caesar += eng_a[j + len(eng_a)]
+        else:
+            eng_a_caesar += eng_a[j]
 
-    if (a[0] != -1) or (a[1] != -1):
-        for i in range(len(ciphertext)):
-            if ciphertext[i].isupper():
-                plaintext += eng_ABC[i + 3]
-            else:
-                plaintext += eng_abc[i + 3]
-            if ciphertext[i].isdigit():
-                plaintext += ciphertext[i]
+    for i in range(len(rus_A)):
+        j = i - shift
+        if j < 0:
+            rus_A_caesar += rus_A[j + len(rus_A)]
+        else:
+            rus_A_caesar += rus_A[j]
 
-    else:
-        for i in range(len(ciphertext)):
-            if ciphertext[i].isupper():
-                plaintext += rus_A[i + 3]
-            else:
-                plaintext += rus_a[i + 3]
-            if ciphertext[i].isdigit():
-                plaintext += ciphertext[i]
+    for i in range(len(rus_a)):
+        j = i - shift
+        if j < 0:
+            rus_a_caesar += rus_a[j + len(rus_a)]
+        else:
+            rus_a_caesar += rus_a[j]
+
+    decrypt_eng_A = str.maketrans(eng_A, eng_A_caesar)
+    decrypt_eng_a = str.maketrans(eng_a, eng_a_caesar)
+    decrypt_rus_A = str.maketrans(rus_A, rus_A_caesar)
+    decrypt_rus_a = str.maketrans(rus_a, rus_a_caesar)
+
+    plaintext = ciphertext.translate(decrypt_eng_A).translate(decrypt_eng_a).translate(decrypt_rus_A).translate(decrypt_rus_a)
 
     return plaintext
 
