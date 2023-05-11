@@ -4,6 +4,7 @@ eng_A = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 eng_a = 'abcdefghigklmnopqrstuvwxyz'
 rus_A = 'АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ'
 rus_a = 'абвгдеёжзийклмнопрстуфхцчшщъыьэюя'
+
 def encrypt_caesar(plaintext: str, shift: int = 3) -> str:
 
     ciphertext = ''
