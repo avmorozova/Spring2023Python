@@ -45,9 +45,25 @@ def multiplicative_inverse(e: int, phi: int) -> int:
     >>> multiplicative_inverse(7, 40)
     23
     """
-    # PUT YOUR CODE HERE
-    pass
+    l = phi
+    n = []
+    n.append(phi // e)
+    k = 1
+    while phi % e != 0:
+        a = phi % e
+        phi = e
+        e = a
+        n.append(phi // e)
+        k += 1
 
+    x = [0] * k
+    y = [0] * (k - 1)
+    y.append(1)
+    for i in range(k-1, 0, -1):
+        x[i - 1] = y[i]
+        y[i - 1] = x[i] - y[i] * n[i - 1]
+
+    return y[0] % l
 
 def generate_keypair(p: int, q: int) -> tp.Tuple[tp.Tuple[int, int], tp.Tuple[int, int]]:
     if not (is_prime(p) and is_prime(q)):
@@ -55,11 +71,8 @@ def generate_keypair(p: int, q: int) -> tp.Tuple[tp.Tuple[int, int], tp.Tuple[in
     elif p == q:
         raise ValueError("p and q cannot be equal")
 
-    # n = pq
-    # PUT YOUR CODE HERE
-
-    # phi = (p-1)(q-1)
-    # PUT YOUR CODE HERE
+    n = p * q
+    phi = (p-1) * (q-1)
 
     # Choose an integer e such that e and phi(n) are coprime
     e = random.randrange(1, phi)
