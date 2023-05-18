@@ -14,53 +14,30 @@ def encrypt_vigenere(plaintext: str, keyword: str) -> str:
     >>> encrypt_vigenere("ATTACKATDAWN", "LEMON")
     'LXFOPVEFRNHR'
     """
-    a1 = eng_A.find(plaintext[0])
-    a2 = eng_a.find(plaintext[0])
-    a3 = rus_A.find(plaintext[0])
-    a4 = rus_a.find(plaintext[0])
-    ciphertext = ""
     k = []
-    j = []
-    if (a1 != -1):
-        for i in range(len(keyword)):
+    ciphertext = ""
+    for i in range(len(keyword)):
+        if (eng_A.find(keyword[i]) != -1):
             k.append(eng_A.find(keyword[i]))
-        for i in range(len(plaintext)):
-            j.append(eng_A.find(plaintext[i]))
-            if plaintext[i].isalpha():
-                ciphertext += eng_A[(j[i] + k[i % len(keyword)]) % len(eng_A)]
-            else:
-                ciphertext += plaintext[i]
-        return ciphertext
-    elif (a2 != -1):
-        for i in range(len(keyword)):
+        elif (eng_a.find(keyword[i]) != -1):
             k.append(eng_a.find(keyword[i]))
-        for i in range(len(plaintext)):
-            j.append(eng_a.find(plaintext[i]))
-            if plaintext[i].isalpha():
-                ciphertext += eng_a[(j[i] + k[i % len(keyword)]) % len(eng_a)]
-            else:
-                ciphertext += plaintext[i]
-        return ciphertext
-    elif (a3 != -1):
-        for i in range(len(keyword)):
+        elif (rus_A.find(keyword[i]) != -1):
             k.append(rus_A.find(keyword[i]))
-        for i in range(len(plaintext)):
-            j.append(rus_A.find(plaintext[i]))
-            if plaintext[i] == ' ':
-                ciphertext += plaintext[i]
-            else:
-                ciphertext += rus_A[(j[i] + k[i % len(keyword)]) % len(rus_A)]
-        return ciphertext
-    elif (a4 != -1):
-        for i in range(len(keyword)):
+        elif (rus_a.find(keyword[i]) != -1):
             k.append(rus_a.find(keyword[i]))
-        for i in range(len(plaintext)):
-            j.append(rus_a.find(plaintext[i]))
-            if plaintext[i] == ' ':
-                ciphertext += plaintext[i]
-            else:
-                ciphertext += rus_a[(j[i] + k[i % len(keyword)]) % len(rus_a)]
-        return ciphertext
+
+    for i in range(len(plaintext)):
+        if (eng_A.find(plaintext[i]) != -1):
+            ciphertext += eng_A[(eng_A.find(plaintext[i]) + k[i % len(keyword)]) % len(eng_A)]
+        elif (eng_a.find(plaintext[i]) != -1):
+            ciphertext += eng_a[(eng_a.find(plaintext[i]) + k[i % len(keyword)]) % len(eng_a)]
+        elif (rus_A.find(plaintext[i]) != -1):
+            ciphertext += rus_A[(rus_A.find(plaintext[i]) + k[i % len(keyword)]) % len(rus_A)]
+        elif (rus_a.find(plaintext[i]) != -1):
+            ciphertext += rus_a[(rus_a.find(plaintext[i]) + k[i % len(keyword)]) % len(rus_a)]
+        else:
+            ciphertext += plaintext[i]
+    return ciphertext
 
 def decrypt_vigenere(ciphertext: str, keyword: str) -> str:
     """
@@ -73,67 +50,42 @@ def decrypt_vigenere(ciphertext: str, keyword: str) -> str:
     >>> decrypt_vigenere("LXFOPVEFRNHR", "LEMON")
     'ATTACKATDAWN'
     """
-    a1 = eng_A.find(ciphertext[0])
-    a2 = eng_a.find(ciphertext[0])
-    a3 = rus_A.find(ciphertext[0])
-    a4 = rus_a.find(ciphertext[0])
-    plaintext = ""
     k = []
-    j = []
-
-    if (a1 != -1) :
-        for i in range(len(keyword)):
+    plaintext = ""
+    for i in range(len(keyword)):
+        if (eng_A.find(keyword[i]) != -1):
             k.append(eng_A.find(keyword[i]))
-        for i in range(len(ciphertext)):
-            j.append(eng_A.find(ciphertext[i]))
-            if ciphertext[i].isalpha():
-                if (j[i] - k[i % len(keyword)]) < 0:
-                    plaintext += eng_A[j[i] - k[i % len(keyword)] + len(eng_A)]
-                else:
-                    plaintext += eng_A[(j[i] - k[i % len(keyword)]) % 26]
-            else:
-                plaintext += ciphertext[i]
-        return plaintext
-
-    elif (a2 != -1):
-        for i in range(len(keyword)):
+        elif (eng_a.find(keyword[i]) != -1):
             k.append(eng_a.find(keyword[i]))
-        for i in range(len(ciphertext)):
-            j.append(eng_a.find(ciphertext[i]))
-            if ciphertext[i].isalpha():
-                if (j[i] - k[i % len(keyword)]) < 0:
-                    plaintext += eng_a[j[i] - k[i % len(keyword)] + len(eng_a)]
-                else:
-                    plaintext += eng_a[(j[i] - k[i % len(keyword)]) % 26]
-            else:
-                plaintext += ciphertext[i]
-
-        return plaintext
-
-    elif (a3 != -1) :
-        for i in range(len(keyword)):
+        elif (rus_A.find(keyword[i]) != -1):
             k.append(rus_A.find(keyword[i]))
-        for i in range(len(ciphertext)):
-            j.append(rus_A.find(ciphertext[i]))
-            if ciphertext[i].isalpha():
-                if (j[i] - k[i % len(keyword)]) < 0:
-                    plaintext += rus_A[j[i] - k[i % len(keyword)] + len(rus_A)]
-                else:
-                    plaintext += rus_A[(j[i] - k[i % len(keyword)]) % len(rus_A)]
-            else:
-                plaintext += ciphertext[i]
-        return plaintext
-
-    elif (a4 != -1) :
-        for i in range(len(keyword)):
+        elif (rus_a.find(keyword[i]) != -1):
             k.append(rus_a.find(keyword[i]))
-        for i in range(len(ciphertext)):
-            j.append(rus_a.find(ciphertext[i]))
-            if ciphertext[i].isalpha():
-                if (j[i] - k[i % len(keyword)]) < 0:
-                    plaintext += rus_a[j[i] - k[i % len(keyword)] + len(rus_a)]
-                else:
-                    plaintext += rus_a[(j[i] - k[i % len(keyword)]) % len(rus_a)]
+
+    for i in range(len(ciphertext)):
+        if (eng_A.find(ciphertext[i]) != -1):
+            if (eng_A.find(ciphertext[i]) - k[i % len(keyword)]) < 0:
+                plaintext += eng_A[(eng_A.find(ciphertext[i]) - k[i % len(keyword)] + len(eng_A)) % len(eng_A)]
             else:
-                plaintext += ciphertext[i]
-        return plaintext
+                plaintext += eng_A[(eng_A.find(ciphertext[i]) - k[i % len(keyword)]) % len(eng_A)]
+
+        elif (eng_a.find(ciphertext[i]) != -1):
+            if (eng_a.find(ciphertext[i]) - k[i % len(keyword)]) < 0:
+                plaintext += eng_a[(eng_a.find(ciphertext[i]) - k[i % len(keyword)] + len(eng_a)) % len(eng_a)]
+            else:
+                plaintext += eng_a[(eng_a.find(ciphertext[i]) - k[i % len(keyword)]) % len(eng_a)]
+
+        elif (rus_A.find(ciphertext[i]) != -1):
+            if (rus_A.find(ciphertext[i]) - k[i % len(keyword)]) < 0:
+                plaintext += rus_A[(rus_A.find(ciphertext[i]) - k[i % len(keyword)] + len(rus_A)) % len(rus_A)]
+            else:
+                plaintext += rus_A[(rus_A.find(ciphertext[i]) - k[i % len(keyword)]) % len(rus_A)]
+
+        elif (rus_a.find(ciphertext[i]) != -1):
+            if (rus_a.find(ciphertext[i]) - k[i % len(keyword)]) < 0:
+                plaintext += rus_a[(rus_a.find(ciphertext[i]) - k[i % len(keyword)] + len(rus_a)) % len(rus_a)]
+            else:
+                plaintext += rus_a[(rus_a.find(ciphertext[i]) - k[i % len(keyword)]) % len(rus_a)]
+        else:
+            plaintext += ciphertext[i]
+    return plaintext
