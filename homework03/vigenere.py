@@ -80,6 +80,7 @@ def decrypt_vigenere(ciphertext: str, keyword: str) -> str:
     plaintext = ""
     k = []
     j = []
+
     if (a1 != -1) :
         for i in range(len(keyword)):
             k.append(eng_A.find(keyword[i]))
@@ -109,29 +110,30 @@ def decrypt_vigenere(ciphertext: str, keyword: str) -> str:
 
         return plaintext
 
-
-    elif (a3 != -1):
+    elif (a3 != -1) :
         for i in range(len(keyword)):
             k.append(rus_A.find(keyword[i]))
         for i in range(len(ciphertext)):
             j.append(rus_A.find(ciphertext[i]))
-            if ciphertext[i] == ' ':
-                plaintext += ciphertext[i]
-            elif (j[i] - k[i % len(keyword)]) < 0:
-                plaintext += rus_A[j[i] - k[i % len(keyword)] + len(rus_A)]
+            if ciphertext[i].isalpha():
+                if (j[i] - k[i % len(keyword)]) < 0:
+                    plaintext += rus_A[j[i] - k[i % len(keyword)] + len(rus_A)]
+                else:
+                    plaintext += rus_A[(j[i] - k[i % len(keyword)]) % len(rus_A)]
             else:
-                plaintext += rus_A[j[i] - k[i % len(keyword)]]
+                plaintext += ciphertext[i]
         return plaintext
 
-    elif (a4 != -1):
+    elif (a4 != -1) :
         for i in range(len(keyword)):
             k.append(rus_a.find(keyword[i]))
         for i in range(len(ciphertext)):
             j.append(rus_a.find(ciphertext[i]))
-            if ciphertext[i] == ' ':
-                plaintext += ciphertext[i]
-            elif (j[i] - k[i % len(keyword)]) < 0:
-                plaintext += rus_a[j[i] - k[i % len(keyword)] + len(rus_a)]
+            if ciphertext[i].isalpha():
+                if (j[i] - k[i % len(keyword)]) < 0:
+                    plaintext += rus_a[j[i] - k[i % len(keyword)] + len(rus_a)]
+                else:
+                    plaintext += rus_a[(j[i] - k[i % len(keyword)]) % len(rus_a)]
             else:
-                plaintext += rus_a[j[i] - k[i % len(keyword)]]
+                plaintext += ciphertext[i]
         return plaintext
